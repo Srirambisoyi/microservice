@@ -15,8 +15,8 @@ public class AccountsMapper {
     public static Accounts mapToAccounts(AccountsDto accountsDto,Accounts accounts)
     {
         accounts.setAccountNumber(accountsDto.getAccountNumber());
-        accountsDto.setAccountType(accounts.getAccountType());
-        accountsDto.setBranchAddress(accountsDto.getBranchAddress());
+        accounts.setAccountType(accounts.getAccountType());
+        accounts.setBranchAddress(accountsDto.getBranchAddress());
         return accounts;
     }
 
