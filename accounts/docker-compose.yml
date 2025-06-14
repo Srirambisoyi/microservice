@@ -1,0 +1,40 @@
+services:
+  accounts:
+    image: "inspiron968/accounts:s4"
+    container_name: account-ms
+    ports:
+      - "8080:8080"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - eazybank
+
+  loans:
+    image: "inspiron968/loans:s4"
+    container_name: loans-ms
+    ports:
+      - "8081:8090"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - eazybank
+
+  card:
+    image: "inspiron968/card:s4"
+    container_name: card-ms
+    ports:
+      - "8082:9000"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - eazybank
+
+networks:
+  eazybank:
+    driver: "bridge"
