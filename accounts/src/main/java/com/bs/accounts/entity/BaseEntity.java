@@ -30,5 +30,5 @@ public class BaseEntity {
     private LocalDateTime updatedAt;
     @LastModifiedBy
     @Column(insertable = false)
-    private LocalDateTime updatedBy;
+    private String updatedBy;
 }
