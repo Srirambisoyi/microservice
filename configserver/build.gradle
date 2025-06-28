@@ -35,6 +35,9 @@ dependencyManagement {
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
 	}
 }
+bootBuildImage {
+	imageName = 'inspiron968/config:s7'
+}
 
 tasks.named('test') {
 	useJUnitPlatform()
