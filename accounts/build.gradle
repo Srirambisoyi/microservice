@@ -53,7 +53,7 @@ dependencyManagement {
 }
 
 bootBuildImage {
-	imageName = 'inspiron968/accounts:s4'
+	imageName = 'inspiron968/accounts:s7'
 }
 
 tasks.named('test') {

@@ -46,7 +46,7 @@ dependencyManagement {
 	}
 }
 bootBuildImage {
-	imageName = 'inspiron968/card:s4'
+	imageName = 'inspiron968/card:s7'
 }
 
 tasks.named('test') {
