@@ -1,0 +1,95 @@
+services:
+  rabbit:
+    image: rabbitmq:3.13-management
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+
+  configserver:
+    image: "inspiron968/config:s7"
+    container_name: config-ms
+    ports:
+      - "8071:8071"
+    depends_on:
+        rabbit:
+            condition: service_healthy
+    extends:
+      file: common-config.yml
+      service: microservice-base-config
+
+  accounts:
+    image: "inspiron968/accounts:s7"
+    container_name: account-ms
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_APPLICATION_NAME: "accounts"
+    depends_on:
+        configserver:
+            condition: service_started
+    command: sh -c "sleep 45 && /cnb/process/web"
+    restart: on-failure
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 30s
+        max_attempts: 3
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
+
+  loans:
+    image: "inspiron968/loans:s7"
+    container_name: loans-ms
+    ports:
+      - "8081:8090"
+    environment:
+      SPRING_APPLICATION_NAME: "loan"
+    depends_on:
+        configserver:
+            condition: service_started
+    command: sh -c "sleep 45 && /cnb/process/web"
+    restart: on-failure
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 30s
+        max_attempts: 3
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
+
+  card:
+    image: "inspiron968/card:s7"
+    container_name: card-ms
+    ports:
+      - "8082:9000"
+    environment:
+      SPRING_APPLICATION_NAME: "card"
+    depends_on:
+        configserver:
+            condition: service_started
+    command: sh -c "sleep 45 && /cnb/process/web"
+    restart: on-failure
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 30s
+        max_attempts: 3
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
+
+networks:
+  eazybank:
+    driver: "bridge"
